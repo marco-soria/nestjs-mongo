@@ -48,6 +48,7 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @IsMongoId()
+  @ApiProperty()
   readonly brand: string;
 }
 
