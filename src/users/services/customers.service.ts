@@ -20,7 +20,7 @@ export class CustomersService {
   }
 
   create(data: CreateCustomerDto) {
-    console.log(data);
+    //console.log(data);
     const newModel = new this.customerModel(data);
     return newModel.save();
   }
