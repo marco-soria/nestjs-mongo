@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
+import { MongoClient } from 'mongodb';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,9 +13,17 @@ import { environments } from './environments';
 import config from './config';
 import { lastValueFrom } from 'rxjs';
 
-console.log('API_KEY:', process.env.API_KEY);
-console.log('DATABASE_NAME:', process.env.DATABASE_NAME);
-console.log('DATABASE_PORT:', process.env.DATABASE_PORT);
+const uri = 'mongodb://root:root@localhost:27017/?authSource=admin'
+
+const client = new MongoClient(uri);
+async function run() {
+  await client.connect();
+  const database = client.db('platzi-store');
+  const taskCollection = database.collection('tasks');
+  const tasks = await taskCollection.find().toArray();
+  console.log(tasks);
+}
+run();
 @Module({
   imports: [
     ConfigModule.forRoot({
